@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import errorMiddleware from './middlewares/error.middleware.js';
 import logMiddleware from './middlewares/logger.middleware.js';
 import { authMiddleware } from './middlewares/auth-middleware.js';
@@ -9,6 +10,7 @@ import stockMovementRoutes from './routes/stock-movement.routes.js';
 import reportRoutes from './routes/report.routes.js';
 
 const app = express();
+app.use(cors({ origin: process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',').map((item) => item.trim()) : true }));
 app.use(express.json());
 app.use(logMiddleware);
 app.get('/', (_req, res) => res.json({ api: 'Guardião do Almoxarifado', status: 'online' }));
