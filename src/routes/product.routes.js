@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import controller from '../controllers/product.controller.js';
+import { ensureValidId } from '../middlewares/validate.middleware.js';
+import { requireRole } from '../middlewares/auth-middleware.js';
+const router = Router();
+router.post('/produtos', requireRole('ADMIN'), controller.create);
+router.get('/produtos', controller.list);
+router.get('/produtos/:id', ensureValidId, controller.get);
+router.put('/produtos/:id', ensureValidId, requireRole('ADMIN'), controller.update);
+router.delete('/produtos/:id', ensureValidId, requireRole('ADMIN'), controller.remove);
+export default router;

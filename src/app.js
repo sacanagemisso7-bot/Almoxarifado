@@ -1,0 +1,20 @@
+import express from 'express';
+import errorMiddleware from './middlewares/error.middleware.js';
+import logMiddleware from './middlewares/logger.middleware.js';
+import { authMiddleware } from './middlewares/auth-middleware.js';
+import healthcheckRoutes from './routes/healthcheck.routes.js';
+import authRoutes from './routes/auth.routes.js';
+import productRoutes from './routes/product.routes.js';
+import stockMovementRoutes from './routes/stock-movement.routes.js';
+import reportRoutes from './routes/report.routes.js';
+
+const app = express();
+app.use(express.json());
+app.use(logMiddleware);
+app.get('/', (_req, res) => res.json({ api: 'Guardião do Almoxarifado', status: 'online' }));
+app.use('/api', healthcheckRoutes);
+app.use('/api', authRoutes);
+app.use('/api', authMiddleware, productRoutes, stockMovementRoutes, reportRoutes);
+app.use((_req, res) => res.status(404).json({ error: 'Rota não encontrada.' }));
+app.use(errorMiddleware);
+export default app;
