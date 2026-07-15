@@ -1,6 +1,13 @@
 import { env } from "./config/env.js"
 import connect from "./config/db.js";
 import app from "./app.js";
+import dns from "node:dns";
+
+
+dns.setServers([
+  "1.1.1.1",
+  "8.8.8.8",
+]);
 
 const port = env.port || 3000;
 
